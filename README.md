@@ -39,9 +39,8 @@ serves tools whoever wrote them.
 - **Accessibility-native.** A semantic action layer is an assistive-technology
   primitive in the ARIA/WCAG lineage — intention-based operations, not DOM
   heuristics.
-- **Open, not owned.** A standard no vendor controls, designed for a first-mover
-  browser to adopt as flagship client (the same open-standard playbook MCP
-  followed) without locking anyone in.
+- **Open, not owned.** A standard no vendor controls, free for any browser or
+  agent to implement — no gatekeeper, no preferred client.
 
 ## Documents
 
@@ -59,9 +58,8 @@ New here? Read **PROPOSAL.md** for the why, then **SPEC.md** for the how.
 ## Status
 
 **v0.1 draft** — experimental (`v0.x`, breaking changes allowed). The goal of
-this revision is to be complete enough for a second implementer to build a
-conforming client from, and concrete enough to put in front of a flagship
-browser. Open issues are tracked in [SPEC.md §12](./SPEC.md#12-open-issues-tbd-non-normative-for-v01).
+this revision is to be complete enough for any implementer to build a conforming
+client from. Open issues are tracked in [SPEC.md §12](./SPEC.md#12-open-issues-tbd-non-normative-for-v01).
 
 ## License
 

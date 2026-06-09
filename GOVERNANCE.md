@@ -1,13 +1,12 @@
 # Articulators — Governance
 
 > How the standard is licensed, how it evolves, and how it stays credibly
-> neutral while a flagship vendor leads adoption. Status: v0.1 (Phase 0,
-> bootstrap).
+> neutral and open to broad adoption. Status: v0.1 (Phase 0, bootstrap).
 
 The governing goal is a standard that competing browser/agent vendors can adopt
 **without feeling captured** by any one of them. Everything below serves that
 goal. The model borrows deliberately from three precedents: **MCP** (vendor-
-authored, open, with a flagship client), **W3C WoT Thing Description / WebAuthn**
+authored, open, broadly adopted), **W3C WoT Thing Description / WebAuthn**
 (neutral-body Web API standardization), and **OpenAPI** (clean spec-vs-tooling
 separation with an unambiguous royalty-free implementation grant).
 
@@ -72,8 +71,9 @@ Neutrality has to be structural, not just stated:
 
 - The spec repository lives under a **neutral organization** (e.g.
   `articulators` / `webarticulators`), **not** under any vendor's GitHub org.
-- The flagship vendor (the first-mover browser) holds a **maintainer seat, not
-  the org**. No single vendor may hold a majority of maintainer seats.
+- No single vendor holds the org, and no single vendor may hold a majority of
+  maintainer seats. A vendor that implements the standard may earn a maintainer
+  seat by contribution, not by being a vendor.
 - The standard's **name/trademark** is held by the steward group (and later a
   foundation) under an open usage policy, so no vendor can claim to ship the
   "official" Articulators.
@@ -81,13 +81,12 @@ Neutrality has to be structural, not just stated:
   are vendor-neutral. Any vendor's marketplace or extension is *a* distributor,
   never the gate.
 
-### The flagship-first narrative, stated neutrally
+### The neutrality stance, stated plainly
 
-> Articulators is an open standard, owned by no vendor. A first-mover browser is
-> its first flagship adopter and reference client — the same role MCP's first
-> flagship client played. Being first and best-integrated is the advantage; the
-> standard stays open so that every other browser and agent extension can adopt
-> it. A bigger pie beats a fenced garden.
+> Articulators is an open standard, owned by no vendor. It is free for any
+> browser, agent, or assistive client to implement — there is no gatekeeper and
+> no preferred client. The more agents and sites adopt it, the more everyone
+> benefits. A bigger pie beats a fenced garden.
 
 ## 5. Phased path: bootstrap → neutral body
 
@@ -96,7 +95,7 @@ Governance broadens only when there is a real second party to share it — the s
 
 | Phase | Trigger | Structure |
 |---|---|---|
-| **Phase 0 — Bootstrap (now)** | — | Single-steward (the author) + the first-mover browser as flagship implementer. MIT/CC-BY + RF grant in place; AP process live; public decision log. Honest "benevolent maintainer + flagship adopter" stage (where MCP started). |
+| **Phase 0 — Bootstrap (now)** | — | Single-steward (the author). MIT/CC-BY + RF grant in place; AP process live; public decision log. Honest "benevolent maintainer" stage (where MCP started). |
 | **Phase 1 — Steward group** | A second independent browser/agent ships a conforming client | Multi-stakeholder steward group; published patent/RF policy; the two-implementations rule applies to feature graduation. |
 | **Phase 2 — Neutral body** | ≥3 independent implementers, or material commercial dependence | Donate spec + trademark to a neutral standards body. **W3C Community Group → Working Group** is the natural path for a Web API (precedent: WoT, WebAuthn); a foundation (OpenJS / Linux Foundation) is the alternative if a companies-consortium model fits better. |
 

@@ -88,7 +88,7 @@ of brittle DOM heuristics. Vendor-neutral interaction standards are exactly wher
 accessibility has always lived; Articulators belongs in that tradition. This is a
 primary motivation, not an afterthought.
 
-## Why this is an open standard (and why a vendor should still want it)
+## Why this is an open standard
 
 Articulators is an **open, vendor-agnostic standard, owned by no vendor.** That
 is not altruism — it is the only thing that works. A site will never add tools
@@ -96,27 +96,11 @@ for one browser's proprietary format; the moat such a format appears to offer is
 illusory because nobody adopts it. Openness is the precondition for the supply
 side to exist at all.
 
-So why would a browser vendor invest? Because of the **MCP playbook.** MCP is
-authored by a commercial vendor, fully open and vendor-neutral, *and*
-strategically valuable — because that vendor's own assistant was the first and
-best-integrated client. A vendor can be the **flagship implementer** of an open
-standard and capture asymmetric value by being first and best, not by locking
-anyone in.
-
-**A first-mover browser is the natural flagship adopter** — the same role MCP's
-first flagship client played. A browser that already leans DOM-native rather than
-screenshot-first is exactly the kind of client Articulators rewards. The pitch to
-any such vendor:
-
-> Articulators is an open standard, owned by no vendor. Be its first flagship
-> adopter and reference client. Being first and best-integrated is the advantage;
-> the standard stays open so that every other browser and agent extension can
-> adopt it and grow the set of sites that ship tools. A bigger pie beats a fenced
-> garden.
-
-Competitor adoption is *desirable*: every browser that speaks Articulators gives
-sites another reason to ship tools, which makes the whole ecosystem — and the
-first mover's head start — more valuable.
+The standard is free for anyone to implement — any browser, any agent extension,
+any assistive client. The more agents that speak Articulators, the more reason a
+site has to ship tools, and the more every implementer and user benefits. There
+is no gatekeeper and no preferred client; we would simply love to see it adopted
+widely. A bigger pie beats a fenced garden.
 
 ## Trust: the hard part, handled
 
@@ -148,7 +132,7 @@ See [SPEC.md §8](./SPEC.md#8-trust-and-provenance) for the verification algorit
 ## The marketplace is one distributor, not a chokepoint
 
 A marketplace — a place to publish, review, and discover third-party
-articulators — is a natural product, and building a flagship one (plus
+articulators — is a natural product, and building a reference one (plus
 hand-written articulators for high-value gap sites like Booking.com) is a
 concrete way to seed the ecosystem. But the **standard defines interfaces, not a
 registry**: a distributor interface, an identity-issuer interface, and a reviewer
@@ -157,7 +141,7 @@ distributor and *a* default-trusted reviewer — never a required gate. The
 conformance test is explicit: an agent must work with the marketplace entirely
 absent. That boundary is what keeps the standard credibly neutral while still
 leaving room for a great marketplace to compete on convenience and review
-quality — again, the open-standard-plus-flagship-implementer posture.
+quality.
 
 We **lead with the gaps, not the strongholds.** The first hand-written
 articulators target sites where agents are stuck paying the screenshot tax and no
@@ -168,8 +152,8 @@ automation users already have.
 
 ## Governance: open, with credible neutrality
 
-To be adopted by competitors, the standard must be more than open-licensed — it
-must be *governed* so no single vendor can capture it:
+To be adopted broadly, the standard must be more than open-licensed — it must be
+*governed* so no single vendor can capture it:
 
 - Spec text under CC-BY with a royalty-free implementation grant; reference code
   MIT.
@@ -177,13 +161,12 @@ must be *governed* so no single vendor can capture it:
   log; a feature graduates from experimental to normative only with **two
   independent implementations** (the IETF "running code" bar) — the strongest
   anti-capture signal.
-- A neutral org for the spec; the flagship vendor holds a maintainer seat, not
-  the org; no single vendor majority.
-- A phased path: bootstrap stewardship now (with the first-mover browser as
-  flagship adopter) →
-  a multi-stakeholder steward group once a second client ships → donation to a
-  neutral standards body (W3C Community Group is the natural home for a Web API;
-  precedent: WoT, WebAuthn).
+- A neutral org for the spec; no single vendor holds the org or a maintainer
+  majority.
+- A phased path: bootstrap stewardship now → a multi-stakeholder steward group
+  once a second implementation ships → donation to a neutral standards body
+  (W3C Community Group is the natural home for a Web API; precedent: WoT,
+  WebAuthn).
 
 Full details in [GOVERNANCE.md](./GOVERNANCE.md).
 
@@ -194,9 +177,8 @@ discovery, invocation), the safety model (read/write, capabilities, the
 confirmation gate), precedence across the three supply paths, the trust and
 provenance model, the package/marketplace interfaces, and governance — plus
 reference TypeScript types, machine-readable JSON Schemas, and a worked
-Booking.com example. It is intended to be complete enough for a second
-implementer to build a conforming client from, and concrete enough to put in
-front of a flagship browser.
+Booking.com example. It is intended to be complete enough for any implementer to
+build a conforming client from.
 
 ## Call to adopt
 
@@ -204,6 +186,5 @@ If you are building a browser agent: implement the first-party path (it's small)
 and you immediately read structured tools from any site that ships them — no
 screenshot tax. If you run a website: declare your domain actions as tools and
 become directly operable by every conforming agent, and more accessible to every
-assistive one. If you are a browser vendor looking for an edge: be the first
-flagship client of the open standard for how websites talk to agents — and own
-that story.
+assistive one. The format is open and free to implement — we would love to see it
+adopted.
