@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://articulators.dev/schemas/v0.1/provenance.schema.json",
+  "title": "Articulators v0.1 Provenance envelope",
+  "description": "The trust-bearing envelope an agent uses to decide whether and how a tool may act on behalf of a targetOrigin. The supplier sets claims (targetOrigin, supplier identity, declaredCapabilities); the agent computes the trust tier independently and never trusts a supplier-asserted tier.",
+  "type": "object",
+  "required": [
+    "supplyPath",
+    "targetOrigin",
+    "supplier",
+    "toolHash",
+    "declaredCapabilities",
+    "version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "supplyPath": {
+      "type": "string",
+      "enum": ["first-party", "extension", "agent-builtin"],
+      "description": "Which supply path produced this tool. 'extension' is the prose 'third-party' path."
+    },
+    "targetOrigin": {
+      "type": "string",
+      "format": "uri",
+      "description": "The origin the tool claims to act on, e.g. 'https://www.booking.com'. A claim; verified by the agent.",
+      "pattern": "^https://"
+    },
+    "supplier": {
+      "type": "object",
+      "required": ["id", "displayName", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable supplier identity, e.g. an origin or 'ext:com.acme.bookinghelper'."
+        },
+        "displayName": { "type": "string" },
+        "kind": {
+          "type": "string",
+          "enum": ["site", "extension", "agent"],
+          "description": "The nature of the supplier identity."
+        }
+      }
+    },
+    "toolHash": {
+      "type": "string",
+      "description": "Hash of the canonicalized tool definition plus its bound code reference.",
+      "pattern": "^sha256:[A-Fa-f0-9]{64}$"
+    },
+    "signature": {
+      "description": "REQUIRED for third-party (extension) tools; null/absent for same-origin first-party tools.",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["alg", "keyId", "sig"],
+          "additionalProperties": false,
+          "properties": {
+            "alg": { "type": "string", "enum": ["ed25519", "es256"] },
+            "keyId": { "type": "string" },
+            "sig": { "type": "string", "description": "base64-encoded signature over the canonical tuple." },
+            "certChain": {
+              "type": "string",
+              "description": "Links keyId to a verified supplier identity (method A/B/C)."
+            }
+          }
+        }
+      ]
+    },
+    "attestations": {
+      "type": "array",
+      "description": "Detached, additive attestations such as marketplace reviews.",
+      "items": {
+        "type": "object",
+        "required": ["type", "issuer", "sig"],
+        "additionalProperties": true,
+        "properties": {
+          "type": {
+            "type": "string",
+            "examples": ["marketplace-review", "transparency-receipt"]
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Identity of the attesting party (e.g. a reviewer)."
+          },
+          "sig": { "type": "string" },
+          "subjectHash": {
+            "type": "string",
+            "description": "The package/tool hash this attestation is pinned to.",
+            "pattern": "^sha256:[A-Fa-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "declaredCapabilities": {
+      "type": "array",
+      "description": "Capability ceiling declared by the supplier; drives consent UX.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "read",
+          "write",
+          "payment",
+          "auth",
+          "personal-data",
+          "external-send"
+        ]
+      },
+      "uniqueItems": true,
+      "minItems": 1
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of the supplier's tool/package.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+([-+].+)?$"
+    },
+    "notBefore": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start of the validity window."
+    },
+    "notAfter": {
+      "type": "string",
+      "format": "date-time",
+      "description": "End of the validity window; bounds revocation staleness."
+    }
+  },
+  "allOf": [
+    {
+      "description": "Third-party (extension) tools MUST carry a non-null signature.",
+      "if": {
+        "properties": { "supplyPath": { "const": "extension" } },
+        "required": ["supplyPath"]
+      },
+      "then": {
+        "properties": { "signature": { "type": "object" } },
+        "required": ["signature"]
+      }
+    }
+  ],
+  "examples": [
+    {
+      "supplyPath": "first-party",
+      "targetOrigin": "https://www.booking.com",
+      "supplier": {
+        "id": "https://www.booking.com",
+        "displayName": "Booking.com",
+        "kind": "site"
+      },
+      "toolHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "signature": null,
+      "declaredCapabilities": ["read", "write", "payment"],
+      "version": "2026.6.0"
+    },
+    {
+      "supplyPath": "extension",
+      "targetOrigin": "https://www.booking.com",
+      "supplier": {
+        "id": "ext:com.acme.bookinghelper",
+        "displayName": "Acme Booking Helper",
+        "kind": "extension"
+      },
+      "toolHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "signature": {
+        "alg": "ed25519",
+        "keyId": "acme-2026",
+        "sig": "BASE64SIGNATURE",
+        "certChain": "https://acme.com/.well-known/articulators-keys.json"
+      },
+      "attestations": [
+        {
+          "type": "marketplace-review",
+          "issuer": "https://market.articulators.dev",
+          "sig": "BASE64SIGNATURE",
+          "subjectHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ],
+      "declaredCapabilities": ["read", "write"],
+      "version": "1.4.0",
+      "notBefore": "2026-06-01T00:00:00Z",
+      "notAfter": "2027-06-01T00:00:00Z"
+    }
+  ]
+}

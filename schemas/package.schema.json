@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://articulators.dev/schemas/v0.1/package.schema.json",
+  "title": "Articulators v0.1 Package manifest (.artpkg)",
+  "description": "manifest.json of a published third-party articulator package. A package is a signed bundle: this manifest, detached attestations, and the tool implementation code. The marketplace is one possible distributor of these packages, not a required chokepoint — any distributor that exposes the standard interfaces can serve them.",
+  "type": "object",
+  "required": [
+    "packageId",
+    "version",
+    "publisher",
+    "targetMatch",
+    "tools",
+    "signature",
+    "integrity",
+    "minSpecVersion"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "packageId": {
+      "type": "string",
+      "description": "Reverse-DNS package identity, e.g. 'com.acme.bookinghelper'.",
+      "pattern": "^[a-z0-9]+(\\.[a-z0-9-]+)+$"
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver. Each version is independently signed and independently reviewed.",
+      "pattern": "^\\d+\\.\\d+\\.\\d+([-+].+)?$"
+    },
+    "publisher": {
+      "type": "object",
+      "required": ["id", "displayName", "verifiedIdentity"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "displayName": { "type": "string" },
+        "verifiedIdentity": {
+          "type": "object",
+          "description": "How the publisher's identity was established (method A/B/C).",
+          "required": ["method"],
+          "additionalProperties": true,
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": [
+                "marketplace-issued",
+                "domain-bound",
+                "sigstore-oidc"
+              ]
+            },
+            "domain": {
+              "type": "string",
+              "description": "For domain-bound identity: the proven domain."
+            }
+          }
+        }
+      }
+    },
+    "targetMatch": {
+      "type": "array",
+      "description": "URLPattern-subset match patterns. Every tool's targetOrigin MUST be covered by these patterns; the patterns are part of the signed payload.",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "examples": [
+          "https://www.booking.com/*",
+          "https://*.booking.com/hotel/*"
+        ]
+      }
+    },
+    "tools": {
+      "type": "array",
+      "description": "The tools this package supplies. Each references its implementation by code hash.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["toolDef", "codeRef", "declaredCapabilities", "targetOrigin"],
+        "additionalProperties": false,
+        "properties": {
+          "toolDef": {
+            "$ref": "https://articulators.dev/schemas/v0.1/tool.schema.json"
+          },
+          "codeRef": {
+            "type": "string",
+            "description": "Path/reference into the package's code/ tree for this tool's implementation."
+          },
+          "targetOrigin": {
+            "type": "string",
+            "pattern": "^https://",
+            "description": "Origin this tool acts on. MUST be covered by targetMatch."
+          },
+          "declaredCapabilities": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "read",
+                "write",
+                "payment",
+                "auth",
+                "personal-data",
+                "external-send"
+              ]
+            },
+            "uniqueItems": true,
+            "minItems": 1
+          }
+        }
+      }
+    },
+    "signature": {
+      "type": "object",
+      "description": "Publisher signature over the canonicalized manifest plus code hashes.",
+      "required": ["alg", "keyId", "sig"],
+      "additionalProperties": false,
+      "properties": {
+        "alg": { "type": "string", "enum": ["ed25519", "es256"] },
+        "keyId": { "type": "string" },
+        "sig": { "type": "string" },
+        "certChain": { "type": "string" }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "required": ["codeHashes"],
+      "additionalProperties": false,
+      "properties": {
+        "codeHashes": {
+          "type": "object",
+          "description": "Map of codeRef -> sha256 hash. Hashing the code (not inlining it) keeps large bundles out of the signed payload while still binding them.",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^sha256:[A-Fa-f0-9]{64}$"
+          }
+        }
+      }
+    },
+    "minSpecVersion": {
+      "type": "string",
+      "description": "Minimum Articulators protocol version required.",
+      "pattern": "^\\d+\\.\\d+$"
+    }
+  },
+  "examples": [
+    {
+      "packageId": "com.acme.bookinghelper",
+      "version": "1.4.0",
+      "publisher": {
+        "id": "ext:com.acme.bookinghelper",
+        "displayName": "Acme Booking Helper",
+        "verifiedIdentity": { "method": "domain-bound", "domain": "acme.com" }
+      },
+      "targetMatch": ["https://www.booking.com/*", "https://*.booking.com/hotel/*"],
+      "tools": [
+        {
+          "toolDef": {
+            "name": "findCheaperDates",
+            "description": "Suggest nearby dates with a lower nightly rate for the current hotel.",
+            "inputSchema": {
+              "type": "object",
+              "required": ["hotelId"],
+              "properties": {
+                "hotelId": { "type": "string" },
+                "windowDays": { "type": "integer", "minimum": 1 }
+              }
+            },
+            "effects": { "mode": "read", "idempotent": true, "confirmation": "none" }
+          },
+          "codeRef": "code/find-cheaper-dates.js",
+          "targetOrigin": "https://www.booking.com",
+          "declaredCapabilities": ["read"]
+        }
+      ],
+      "signature": { "alg": "ed25519", "keyId": "acme-2026", "sig": "BASE64SIGNATURE" },
+      "integrity": {
+        "codeHashes": {
+          "code/find-cheaper-dates.js": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      },
+      "minSpecVersion": "0.1"
+    }
+  ]
+}

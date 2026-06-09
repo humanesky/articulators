@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://articulators.dev/schemas/v0.1/tool.schema.json",
+  "title": "Articulators v0.1 Tool definition",
+  "description": "Normative shape of a tool registered with window.articulators. The `invoke` implementation is a runtime function and is therefore out of scope for JSON Schema; this schema validates the serializable, agent-facing portion of a tool (name, description, schemas, effects).",
+  "type": "object",
+  "required": ["name", "description", "inputSchema", "effects"],
+  "additionalProperties": true,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Unqualified tool name, verb-first lowerCamelCase. The registry constructs the qualified name; suppliers MUST NOT include '/' or ':'.",
+      "pattern": "^[a-z][a-zA-Z0-9]*$",
+      "maxLength": 64
+    },
+    "title": {
+      "type": "string",
+      "description": "Optional human display label."
+    },
+    "description": {
+      "type": "string",
+      "description": "Agent-facing description: what the tool does and when to use it.",
+      "minLength": 1
+    },
+    "inputSchema": {
+      "$ref": "#/$defs/objectJSONSchema",
+      "description": "JSON Schema 2020-12 for the arguments. Root type MUST be 'object'."
+    },
+    "outputSchema": {
+      "type": "object",
+      "description": "Optional JSON Schema 2020-12 for ToolResult.data."
+    },
+    "effects": { "$ref": "#/$defs/effectHints" },
+    "meta": {
+      "type": "object",
+      "description": "Free-form, namespaced extension metadata."
+    }
+  },
+  "$defs": {
+    "objectJSONSchema": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "description": "Root schema type. MUST be 'object' for tool input.",
+          "const": "object"
+        }
+      }
+    },
+    "capability": {
+      "type": "string",
+      "enum": [
+        "read",
+        "write",
+        "payment",
+        "auth",
+        "personal-data",
+        "external-send"
+      ]
+    },
+    "effectHints": {
+      "type": "object",
+      "description": "Safety/effect metadata. REQUIRED on every tool.",
+      "required": ["mode", "idempotent", "confirmation"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["read", "write"],
+          "description": "Hard binary. Reads never mutate observable state."
+        },
+        "idempotent": {
+          "type": "boolean",
+          "description": "Whether repeating the call with the same arguments has the same effect as one call."
+        },
+        "confirmation": {
+          "type": "string",
+          "enum": ["none", "required"],
+          "description": "Whether the agent MUST obtain explicit user confirmation before invoking."
+        },
+        "destructive": {
+          "type": "boolean",
+          "description": "Hint: cancels, deletes, or is hard/impossible to reverse."
+        },
+        "scopes": {
+          "type": "array",
+          "description": "Declared capability ceiling.",
+          "items": { "$ref": "#/$defs/capability" },
+          "uniqueItems": true
+        },
+        "consequences": {
+          "type": "string",
+          "description": "Short NL description shown at confirmation time. SHOULD be present when confirmation is 'required'."
+        }
+      },
+      "allOf": [
+        {
+          "description": "Any consequential write SHOULD require confirmation; destructive writes MUST.",
+          "if": {
+            "properties": {
+              "mode": { "const": "write" },
+              "destructive": { "const": true }
+            },
+            "required": ["mode", "destructive"]
+          },
+          "then": {
+            "properties": { "confirmation": { "const": "required" } }
+          }
+        }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "name": "searchHotels",
+      "title": "Search hotels",
+      "description": "Search available hotels for a destination and date range.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["destination", "checkIn", "checkOut", "guests"],
+        "properties": {
+          "destination": { "type": "string" },
+          "checkIn": { "type": "string", "format": "date" },
+          "checkOut": { "type": "string", "format": "date" },
+          "guests": { "type": "integer", "minimum": 1 },
+          "rooms": { "type": "integer", "minimum": 1 },
+          "priceMax": { "type": "number" },
+          "currency": { "type": "string" }
+        }
+      },
+      "effects": { "mode": "read", "idempotent": true, "confirmation": "none" }
+    },
+    {
+      "name": "cancelBooking",
+      "title": "Cancel booking",
+      "description": "Cancel an existing reservation.",
+      "inputSchema": {
+        "type": "object",
+        "required": ["bookingId"],
+        "properties": {
+          "bookingId": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      },
+      "effects": {
+        "mode": "write",
+        "idempotent": true,
+        "destructive": true,
+        "confirmation": "required",
+        "scopes": ["write"],
+        "consequences": "Cancels the reservation. Refund depends on the cancellation policy and may be partial or none."
+      }
+    }
+  ]
+}
