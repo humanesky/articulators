@@ -1,3 +1,13 @@
+Articulators is dual-licensed. The MIT License below governs all CODE in this
+repository (reference types, machine-readable schemas, example sources, and any
+reference implementation). The SPECIFICATION TEXT (SPEC.md, PROPOSAL.md,
+GOVERNANCE.md, and the prose within the schemas) is licensed CC-BY-4.0 together
+with a royalty-free implementation grant / patent non-assert, as described in
+GOVERNANCE.md §1. Where a file is primarily prose, the spec license applies;
+where it is primarily code, the MIT License applies.
+
+----------------------------------------------------------------------
+
 MIT License
 
 Copyright (c) 2026 humanesky
