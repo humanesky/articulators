@@ -32,8 +32,10 @@ serves tools whoever wrote them.
 
 - **No screenshot tax.** Structured calls, structured results.
 - **Three supply paths, one API.** Sites ship first-party tools; anyone can add
-  tools to any site via an extension/marketplace; browser agents ship built-ins.
-  Same registry, graceful fallback when a path is absent.
+  tools for a site via an extension/marketplace; browser agents ship their own
+  per-site articulators. Articulators are always **site-specific** — there is no
+  generic, one-size-fits-all tool (that would just be the browser API). Same
+  registry, per-site tools, graceful fallback to the next author when present.
 - **Accessibility-native.** A semantic action layer is an assistive-technology
   primitive in the ARIA/WCAG lineage — intention-based operations, not DOM
   heuristics.

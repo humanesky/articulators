@@ -57,14 +57,25 @@ design:
 |---|---|---|
 | **First-party** | The web app's own developers | Direct access to the site's internal state and APIs |
 | **Extension** (third-party) | Anyone — via an extension, distributed through a marketplace | Operate over the page's surfaces |
-| **Agent-builtin** | The browser / agent vendor | Built into the client |
+| **Agent-builtin** | The browser / agent vendor, shipping its own per-site articulators | Operate over the page's surfaces |
 
-A browser agent consumes one uniform registry; only the *tools* differ. A site
-can ship first-class tools today; where it doesn't, an extension can fill the gap;
-where neither exists, the agent falls back to its own. And it degrades
-gracefully: an agent uses a first-party tool when present and falls back down the
-ladder when it isn't, so sites that haven't adopted anything still work on day
-one. That graceful fallback is what makes a cold standard adoptable.
+**Every articulator is bound to a specific page or URL pattern — there is no
+generic, one-size-fits-all articulator.** A tool that worked on "any site" would
+just be the standard browser API and buy nothing; the value is precisely that a
+tool knows `booking.com`'s `searchHotels` or `createBooking`. The three paths
+differ only in *who authored and ships* the per-site tools, never in how specific
+they are. Even the agent-builtin path is the vendor writing articulators for
+particular sites — and the intended dynamic is that clients author their own,
+then **reshare what works** so good per-site articulators spread.
+
+A browser agent consumes one uniform registry; only the authorship differs. For a
+given site, a first-party tool wins when present, otherwise an installed
+extension's, otherwise the agent's own bundled one — all three target *that same
+site*. If no articulator exists for a site at all, there are simply no tools for
+it and the agent does whatever it did before (its own DOM/vision behavior, which
+is outside this standard) — so unadopted sites still work, just without the
+benefit, and anyone can write and reshare an articulator to close the gap. That
+per-site graceful fallback is what makes a cold standard adoptable.
 
 ## Accessibility is the point, not a footnote
 
