@@ -98,19 +98,21 @@ side to exist at all.
 
 So why would a browser vendor invest? Because of the **MCP playbook.** MCP is
 authored by a commercial vendor, fully open and vendor-neutral, *and*
-strategically valuable — because Claude was the first and best-integrated client.
-A vendor can be the **flagship implementer** of an open standard and capture
-asymmetric value by being first and best, not by locking anyone in.
+strategically valuable — because that vendor's own assistant was the first and
+best-integrated client. A vendor can be the **flagship implementer** of an open
+standard and capture asymmetric value by being first and best, not by locking
+anyone in.
 
-**Opera Neon is the natural first flagship adopter** — the way Claude was the
-first flagship MCP client. Neon already leans DOM-native rather than
-screenshot-first, which is exactly the edge Articulators rewards. The pitch:
+**A first-mover browser is the natural flagship adopter** — the same role MCP's
+first flagship client played. A browser that already leans DOM-native rather than
+screenshot-first is exactly the kind of client Articulators rewards. The pitch to
+any such vendor:
 
-> Articulators is an open standard, owned by no vendor. Opera Neon is its first
-> flagship adopter and reference client. Being first and best-integrated is the
-> advantage; the standard stays open so that Comet, Edge, Arc, Claude for Chrome,
-> and any future agent can adopt it and grow the set of sites that ship tools. A
-> bigger pie beats a fenced garden.
+> Articulators is an open standard, owned by no vendor. Be its first flagship
+> adopter and reference client. Being first and best-integrated is the advantage;
+> the standard stays open so that every other browser and agent extension can
+> adopt it and grow the set of sites that ship tools. A bigger pie beats a fenced
+> garden.
 
 Competitor adoption is *desirable*: every browser that speaks Articulators gives
 sites another reason to ship tools, which makes the whole ecosystem — and the
@@ -155,14 +157,14 @@ distributor and *a* default-trusted reviewer — never a required gate. The
 conformance test is explicit: an agent must work with the marketplace entirely
 absent. That boundary is what keeps the standard credibly neutral while still
 leaving room for a great marketplace to compete on convenience and review
-quality — again, the MCP↔Claude posture.
+quality — again, the open-standard-plus-flagship-implementer posture.
 
 We **lead with the gaps, not the strongholds.** The first hand-written
 articulators target sites where agents are stuck paying the screenshot tax and no
 first-party automation exists — travel, commerce, dashboards (Booking.com is the
-opening case). We deliberately *skip* sites a platform already automates well
-(e.g. Google Docs, which Google itself drives): the goal is to fill gaps, not to
-duplicate automation users already have.
+opening case). We deliberately *skip* sites whose own platform already automates
+them well with first-party tooling: the goal is to fill gaps, not to duplicate
+automation users already have.
 
 ## Governance: open, with credible neutrality
 
@@ -177,7 +179,8 @@ must be *governed* so no single vendor can capture it:
   anti-capture signal.
 - A neutral org for the spec; the flagship vendor holds a maintainer seat, not
   the org; no single vendor majority.
-- A phased path: bootstrap stewardship now (with Opera as flagship adopter) →
+- A phased path: bootstrap stewardship now (with the first-mover browser as
+  flagship adopter) →
   a multi-stakeholder steward group once a second client ships → donation to a
   neutral standards body (W3C Community Group is the natural home for a Web API;
   precedent: WoT, WebAuthn).
@@ -201,5 +204,6 @@ If you are building a browser agent: implement the first-party path (it's small)
 and you immediately read structured tools from any site that ships them — no
 screenshot tax. If you run a website: declare your domain actions as tools and
 become directly operable by every conforming agent, and more accessible to every
-assistive one. If you are Opera Neon: be the first flagship client of the open
-standard for how websites talk to agents — and own that story.
+assistive one. If you are a browser vendor looking for an edge: be the first
+flagship client of the open standard for how websites talk to agents — and own
+that story.

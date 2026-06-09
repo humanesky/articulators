@@ -72,8 +72,8 @@ Neutrality has to be structural, not just stated:
 
 - The spec repository lives under a **neutral organization** (e.g.
   `articulators` / `webarticulators`), **not** under any vendor's GitHub org.
-- A flagship vendor (initially Opera Neon) holds a **maintainer seat, not the
-  org**. No single vendor may hold a majority of maintainer seats.
+- The flagship vendor (the first-mover browser) holds a **maintainer seat, not
+  the org**. No single vendor may hold a majority of maintainer seats.
 - The standard's **name/trademark** is held by the steward group (and later a
   foundation) under an open usage policy, so no vendor can claim to ship the
   "official" Articulators.
@@ -81,13 +81,13 @@ Neutrality has to be structural, not just stated:
   are vendor-neutral. Any vendor's marketplace or extension is *a* distributor,
   never the gate.
 
-### The Opera-first narrative, stated neutrally
+### The flagship-first narrative, stated neutrally
 
-> Articulators is an open standard, owned by no vendor. Opera Neon is its first
-> flagship adopter and reference client — the way Claude was the first flagship
-> MCP client. Being first and best-integrated is the advantage; the standard
-> stays open so that Comet, Edge, Arc, Claude for Chrome, and any future agent
-> can adopt it. A bigger pie beats a fenced garden.
+> Articulators is an open standard, owned by no vendor. A first-mover browser is
+> its first flagship adopter and reference client — the same role MCP's first
+> flagship client played. Being first and best-integrated is the advantage; the
+> standard stays open so that every other browser and agent extension can adopt
+> it. A bigger pie beats a fenced garden.
 
 ## 5. Phased path: bootstrap → neutral body
 
@@ -96,7 +96,7 @@ Governance broadens only when there is a real second party to share it — the s
 
 | Phase | Trigger | Structure |
 |---|---|---|
-| **Phase 0 — Bootstrap (now)** | — | Single-steward (the author) + Opera as flagship implementer. MIT/CC-BY + RF grant in place; AP process live; public decision log. Honest "benevolent maintainer + flagship adopter" stage (where MCP started). |
+| **Phase 0 — Bootstrap (now)** | — | Single-steward (the author) + the first-mover browser as flagship implementer. MIT/CC-BY + RF grant in place; AP process live; public decision log. Honest "benevolent maintainer + flagship adopter" stage (where MCP started). |
 | **Phase 1 — Steward group** | A second independent browser/agent ships a conforming client | Multi-stakeholder steward group; published patent/RF policy; the two-implementations rule applies to feature graduation. |
 | **Phase 2 — Neutral body** | ≥3 independent implementers, or material commercial dependence | Donate spec + trademark to a neutral standards body. **W3C Community Group → Working Group** is the natural path for a Web API (precedent: WoT, WebAuthn); a foundation (OpenJS / Linux Foundation) is the alternative if a companies-consortium model fits better. |
 
