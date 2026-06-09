@@ -15,10 +15,17 @@ RFC 2119 / RFC 8174.
 ## 1. Overview and conformance
 
 An **articulator** is a set of **tools** a supplier exposes to a **browser
-agent** for a given web page. A tool is a named, described, typed operation —
-the same shape as an MCP / skill tool definition — bound to a JavaScript
-implementation. The agent invokes tools directly instead of inferring intent
-from rendered pixels.
+agent** for a specific page or URL pattern. A tool is a named, described, typed
+operation — the same shape as an MCP / skill tool definition — bound to a
+JavaScript implementation. The agent invokes tools directly instead of inferring
+intent from rendered pixels.
+
+Every articulator is **site-specific** regardless of supply path: each tool
+carries a `targetOrigin` (§8.1) and binds to a particular site's domain
+operations. There is no generic, cross-site articulator — a tool that applied to
+"any site" would be nothing more than the standard browser API. The supply paths
+(§8) differ only in *who* authors and ships the per-site tools, not in their
+specificity.
 
 The protocol has two conformance classes:
 
@@ -382,10 +389,15 @@ Precedence across supply paths, highest first:
 first-party  >  extension  >  agent-builtin
 ```
 
-Rationale: first-party tools have direct, privileged access to the site's
-internal model and are authoritative; an extension is an explicit,
-site-specific, user-installed augmentation; an agent-builtin is the universal
-fallback.
+Every tool in all three paths is bound to a specific origin / URL pattern (its
+`targetOrigin`, §8.1) — there is no generic, cross-site tool. Precedence
+therefore ranks *authority over the same site*, not generality. Rationale:
+first-party tools have direct, privileged access to the site's internal model and
+are authoritative; an extension is an explicit, user-installed augmentation for
+that site; an agent-builtin is the vendor's own bundled articulator for that
+site, ranked lowest because it is neither the site itself nor the user's explicit
+per-site choice. (Absence of any tool for a site is not an "agent-builtin
+fallback" — it simply means the agent has no Articulators tools there.)
 
 Merge rules:
 
